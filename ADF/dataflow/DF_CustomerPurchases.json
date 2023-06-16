@@ -1,0 +1,101 @@
+{
+	"name": "DF_CustomerPurchases",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_storage_demobits_oltp_purchaseOrder",
+						"type": "DatasetReference"
+					},
+					"name": "PurchaseOrder"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_demobits_oltp_Customer",
+						"type": "DatasetReference"
+					},
+					"name": "Customer"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_sql_demobitsdb_May2023CustomerPurchases",
+						"type": "DatasetReference"
+					},
+					"name": "Output"
+				}
+			],
+			"transformations": [
+				{
+					"name": "PurchaseOrderProjected"
+				},
+				{
+					"name": "CustomerProjected"
+				},
+				{
+					"name": "JoinedStream"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          name as string,",
+				"          dept as string,",
+				"          allrounderornot as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> PurchaseOrder",
+				"source(output(",
+				"          Amit as string,",
+				"          { Chaitali.} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Customer",
+				"PurchaseOrder select(mapColumn(",
+				"          name,",
+				"          dept,",
+				"          allrounderornot",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> PurchaseOrderProjected",
+				"Customer select(mapColumn(",
+				"          Amit,",
+				"          { Chaitali.}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CustomerProjected",
+				"PurchaseOrderProjected, CustomerProjected join(name == Amit,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinedStream",
+				"JoinedStream sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CustomerName as string,",
+				"          CustomerDepartment as string,",
+				"          CustomerAmit as string,",
+				"          CustomerChaitali as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          CustomerName = name,",
+				"          CustomerDepartment = dept,",
+				"          CustomerAmit = Amit,",
+				"          CustomerChaitali = { Chaitali.}",
+				"     )) ~> Output"
+			]
+		}
+	}
+}

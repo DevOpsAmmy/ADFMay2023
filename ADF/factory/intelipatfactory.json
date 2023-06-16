@@ -1,0 +1,9 @@
+{
+	"name": "intelipatfactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "00251983-5cbe-4aa9-aefa-410e9a342dd1",
+		"tenantId": "6219785f-14c2-499f-bc06-df9b94bcef3f"
+	}
+}

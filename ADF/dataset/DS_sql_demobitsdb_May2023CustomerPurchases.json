@@ -1,0 +1,37 @@
+{
+	"name": "DS_sql_demobitsdb_May2023CustomerPurchases",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQL_demobits_customerdb",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "CustomerPurchases"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CustomerName",
+				"type": "varchar"
+			},
+			{
+				"name": "CustomerDepartment",
+				"type": "varchar"
+			},
+			{
+				"name": "CustomerAmit",
+				"type": "varchar"
+			},
+			{
+				"name": "CustomerChaitali",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "May2023CustomerPurchases"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
