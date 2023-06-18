@@ -1,0 +1,68 @@
+{
+	"name": "PL_CosmosDB_Insert",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy orders",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBehavior": "insert"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CustomerName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CustomerCode']"
+								}
+							},
+							{
+								"source": {
+									"name": "CustomerDepartment",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CustomerDepartment']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_sql_demobitsdb_May2023CustomerPurchases",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_CosmosDB_OrderDB_Orders",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
