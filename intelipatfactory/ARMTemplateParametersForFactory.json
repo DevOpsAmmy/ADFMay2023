@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "intelipatfactory"
 		},
+		"LS_CosmosDB_OrderDB_connectionString": {
+			"value": ""
+		},
 		"LS_SQL_demobits_customerdb_connectionString": {
 			"value": ""
 		},

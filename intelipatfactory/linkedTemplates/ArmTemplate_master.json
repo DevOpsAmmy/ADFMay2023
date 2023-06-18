@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "intelipatfactory"
 		},
+		"LS_CosmosDB_OrderDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_CosmosDB_OrderDB'"
+		},
 		"LS_SQL_demobits_customerdb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_SQL_demobits_customerdb'"
@@ -45,6 +49,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_CosmosDB_OrderDB_connectionString": {
+						"value": "[parameters('LS_CosmosDB_OrderDB_connectionString')]"
 					},
 					"LS_SQL_demobits_customerdb_connectionString": {
 						"value": "[parameters('LS_SQL_demobits_customerdb_connectionString')]"

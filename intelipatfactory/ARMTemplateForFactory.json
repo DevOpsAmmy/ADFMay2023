@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "intelipatfactory"
 		},
+		"LS_CosmosDB_OrderDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_CosmosDB_OrderDB'"
+		},
 		"LS_SQL_demobits_customerdb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_SQL_demobits_customerdb'"
@@ -389,6 +393,29 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_CosmosDB_OrderDB_Orders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_CosmosDB_OrderDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "CustomerPurchases"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {},
+				"typeProperties": {
+					"collectionName": "orders"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_CosmosDB_OrderDB')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_Source_dynamic')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -701,6 +728,19 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LS_CosmosDB_OrderDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDb",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_CosmosDB_OrderDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LS_SQL_demobits_customerdb')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -846,6 +886,19 @@
 				"[concat(variables('factoryId'), '/datasets/DS_demobits_oltp_Customer')]",
 				"[concat(variables('factoryId'), '/datasets/DS_sql_demobitsdb_May2023CustomerPurchases')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		}
 	]
 }
